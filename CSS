@@ -1,0 +1,72 @@
+.btn-exportar {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  padding:80px 50px;
+  font-size: 35px;
+  font-weight: bold;
+  border-radius: 5px;
+  
+  
+  cursor: pointer;
+  
+  transition: background-color 0.3s ease;
+}
+
+.btn-adicionar {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  padding: 80px 50px;
+  font-size: 35px;
+  font-weight: bold;
+  border-radius: 5px;
+  
+  cursor: pointer;
+  
+  transition: background-color 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.btn-importar {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  padding: 80px 50px;
+  font-size: 35px;
+  font-weight: bold;
+  border-radius: 5px;
+  
+  
+  cursor: pointer;
+  
+  transition: background-color 0.3s ease;
+  
+}
+
+.painel-de-conteudo {
+  position: relative;
+  width: 900px;
+  height: 600px;
+  border: 1px solid #ccc;
+}
+
+.botoes {
+  position: absolute;
+  bottom: 1000px;
+  right: 60px;
+  display: flex;
+  gap: 70px;
+}
+
+.servicos {
+  font-size: 50px;
+  font-family: Arial, serif;
+  position: absolute;
+  top: 80px;
+  right: 280px;
+  color: black;
+  
+}
