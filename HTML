@@ -1,30 +1,287 @@
 <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    
+    <style>
+        /* --- Barra Inferior (Geral) --- */
+        .baixo {
+            position: absolute;
+            left: 0px !important;
+            bottom: 0px;
+            display: flex;
+            width: 100% !important;
+            height: 9%;
+            justify-content: space-around;
+            align-items: center;
+        }
 
-    <html lang="pt-br">
+        .btn-baixo {
+            display: flex;
+            width: 100% !important;
+            height: 100% !important;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(150, 150, 150) !important; 
+            font-size: 1.1rem !important;
+            cursor: pointer;
+            border: none !important;
+            border-radius: 0px !important;
+            box-shadow: none !important;
+        }
 
-       <head>
+        .btn-baixo:hover {
+            background-color: #505050; 
+        }
 
-         <meta charset="UTF-8">
+        #info-modal {
+            width: 10% !important;
+            z-index: 1030;
+        }
 
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         #confirm-modal {
+            z-index: 11;
+        }
+    </style>
+</head>
 
-         <title>Serviços</title>
+<body>
+    
+    <div class="painel">
 
-     </head>
+        <div class="search-container">
+            <input type="text" id="input-busca" placeholder="Pesquisar" onkeyup="renderizarLista()">
+        </div>
 
-     <body>
-       
-<div class="painel">
-  <div class="servicos">
-    <h1>Serviços</h1>
-  </div>
-  <div class="botoes">
-    <button class="btn-exportar">Exportar</button>
-    <button class="btn-adicionar">Adicionar</button>
-    <button class="btn-importar">Importar</button>
-  </div>
-       </div>
-       
-     </body>
+        <div class="servicos">
+            <h1>Serviços</h1>
+        </div>
+			
+        <div class="botoes-principal">
+            <label for="botaoArquivoEx" class="btnArquivo">
+                Exportar
+                <input type="file" id="botaoArquivoEx" />
+            </label>
+				
+            <button type="button" id="btn-adicionar" onclick="toggleModal('form', true)">
+                Adicionar
+            </button>
+ 
+                    <label for="botaoArquivoIm" class="btnArquivo">
+                      Importar
+                     <input type="file" id="botaoArquivoIm" accept=".json,.txt"/>
+                    </label>
+        </div>
+            <div id="form-modal">
+                <div id="modal-content-container">
+                    <button type="button" id="close-modal-btn" onclick="toggleModal('form', false)">
+                        &times;
+                    </button>
+						
+                    <h2 class="form-title" id="form-modal-title">
+                        Adicionar Novo Item
+                    </h2>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input id="nome" value="">
+                        </div>
 
+                        <div class="form-group">
+                            <label for="local">Local (Cidade):</label>
+                            <select id="local">
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dia">Data:</label>
+                            <input id="dia" type="date" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="horario">Horário:</label>
+                            <input id="horario" type="time" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prioridade">Prioridade:</label>
+                            <input id="prioridade" value="" placeholder="1, 2, 3 ou 4">
+                        </div>
+                    </div>
+						
+                    <button type="button" id="salvar" onclick="salvarItem()">
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+            <div id="info-modal">
+                <div id="info-modal-content-container">
+                    <button type="button" class="info-btn" id="close-info-btn" onclick="toggleModal('info', false)">
+                        &times;
+                    </button>
+
+                    <button type="button" class="info-btn" id="editar-btn" onclick="toggleModal('info', false)">
+                        Editar
+                    </button>
+						
+                    <h2 class="form-title">Informações do Serviço</h2>
+                    <input type="hidden" id="info-item-id">
+                    <div>
+                        <div class="form-group">
+                            <label for="info-nome">Nome:</label>
+                            <input id="info-nome" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="info-local">Local:</label>
+                            <input id="info-local" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="info-dia">Data:</label>
+                            <input id="info-dia" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="info-horario">Horário:</label>
+                            <input id="info-horario" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="info-prioridade">Prioridade:</label>
+                            <input id="info-prioridade" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="remarcar-modal">
+                <div id="remarcar-modal-content-container">
+                    <button type="button" id="close-remarcar-btn" onclick="toggleModal('remarcar', false)">
+                        &times;
+                    </button>
+						
+                    <h2 class="form-title">Remarcar Serviço</h2>
+                    <input type="hidden" id="remarcar-item-id">
+
+                    <div>
+                        <div class="form-group">
+                            <label for="remarcar-nome">Nome:</label>
+                            <input id="remarcar-nome">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarcar-local">Local:</label>
+                            <input id="remarcar-local">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarcar-dia">Nova Data:</label>
+                            <input id="remarcar-dia" type="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarcar-horario">Novo Horário:</label>
+                            <input id="remarcar-horario" type="time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarcar-prioridade">Prioridade:</label>
+                            <input id="remarcar-prioridade">
+                        </div>
+                    </div>
+			        
+                    <button type="button" id="confirmar-remarcar" onclick="confirmarRemarcacao()">
+                        Confirmar Remarcação
+                    </button>
+                </div>
+            </div>
+
+
+            <div id="confirm-modal">
+                <div id="confirm-content-container">
+                    <h2 class="form-title">
+                        Confirmação
+                    </h2>
+                    <p id="confirm-message">Você tem certeza que deseja excluir este item?</p>
+                    <div class="confirm-buttons">
+                        <button type="button" id="confirm-yes">Sim</button>
+                        <button type="button" id="confirm-no" onclick="toggleModal('confirm', false)">Não</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mapa-modal">
+                <div id="mapa-modal-content-container">
+					
+					
+                    <div class="cima" id="mapa-modal-baixo">
+                        <button class="btn-cima-mapa" type="button" onclick="toggleModal('mapa', false)">Casa</button>
+                    </div>
+
+                    <div id="mapa-container">
+                        <img id="mapa" src="imagens/mapa.png" style="position: relative;" alt="Mapa-Cidades">
+                    </div>
+
+                </div>
+            </div>
+			
+            <div id="dados-modal">
+                <div id="dados-modal-content-container">
+
+                    <div id="dados-container">
+                        <div class="dados">
+                            <h2 style="justify-self: center;">Banco de Dados dos Serviços</h2>
+                            <div class="dadosArea">
+                                <div class="Serv">
+                                    <div class="quadradoS">
+                                        <h2 class="dado" id="serviço">Mimi</h2>
+                                    </div>
+                                    <div class="quadradoS">
+                                        <h2 class="dado" id="local">Mimi</h2>
+                                    </div>
+                                    <div id="quadradoS">
+                                        <h2 class="dado" id="dia">Mimi</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cima" id="dados-modal-baixo">
+                        <button class="btn-cima-mapa2" type="button" onclick="toggleModal('dados', false)">Casa</button>
+                        <button class="btn-cima-esquerda2" type="button" onclick="ApagarDados()">Apagar Todos os Dados</button>
+                    </div>
+                    
+                </div>
+            </div>
+
+        <div class="calendar" id="calendar">
+            <label for="calendar2">Data de Filtro:</label>
+            <input type="month" class="calendar2" id="calendar2" name="calendar2">
+        </div>
+			
+        <form class="servicos2">
+            <label for="servicos3">Filtrar por Status:</label><br>
+            <select id="servicos3" name="serviços4">
+                <option value="Todos">Todos</option> <option value="Todos os Serviços">Todos os Serviços</option>
+                <option value="Pendentes">Pendentes</option>
+                <option value="Feitos">Feitos</option>
+                <option value="Remarcar">Atrasados</option>
+            </select>
+        </form>
+			
+        <div class="quadrado">
+            <div id="lista-servicos">
+            </div>
+        </div>
+
+        <div class="cima"></div>
+            <button class="btn-cima-esquerda" type="button" onclick="toggleModal('dados', true)">Banco de Dados</button>
+            <button class="btn-cima-direita" type="button" onclick="toggleModal('mapa', true)">Mapa</button>
+        </div>
+    </div>
+</body>
 </html>
